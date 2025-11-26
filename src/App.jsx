@@ -1,155 +1,61 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Plus,
-  X,
-  Upload,
-  Lock,
-  Unlock,
-  Heart,
-  Mail,
-  Instagram,
-  Twitter,
-  ArrowRight,
-  Menu,
-} from 'lucide-react';
+import { Plus, X, Lock, Unlock, Heart, Mail, Instagram, Twitter, Menu, ArrowRight } from 'lucide-react';
 
 const Portfolio = () => {
-  // --- Fonts & Global Styles ---
-  // Injecting Google Fonts for that "Creative" and "Impressive" look
+  // --- Global Font Injection ---
   useEffect(() => {
     const link = document.createElement('link');
-    link.href =
-      'https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;600&display=swap';
+    link.href = 'https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;600&display=swap';
     link.rel = 'stylesheet';
     document.head.appendChild(link);
     return () => document.head.removeChild(link);
   }, []);
 
-  // --- State Management ---
+  // --- State ---
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-
-  // Auth Form State
+  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  
+  // Inputs
   const [usernameInput, setUsernameInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState('');
-
-  // Portfolio Data
-  const [projects, setProjects] = useState([
-    {
-      id: 101,
-      title: 'Neon Noir Series',
-      category: 'COMIC ART',
-      image:
-        'https://images.unsplash.com/photo-1605806616949-1e87b487bc2a?q=80&w=800&auto=format&fit=crop',
-      likes: 124,
-      year: '2023',
-    },
-    {
-      id: 201,
-      title: 'Synthwave Album',
-      category: 'COVER ART',
-      image:
-        'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=800&auto=format&fit=crop',
-      likes: 156,
-      year: '2024',
-    },
-    {
-      id: 301,
-      title: 'Cyber Samurai',
-      category: 'CHARACTER ART',
-      image:
-        'https://images.unsplash.com/photo-1535295972055-1c762f4483e5?q=80&w=800&auto=format&fit=crop',
-      likes: 245,
-      year: '2022',
-    },
-    {
-      id: 102,
-      title: 'Action Sequence',
-      category: 'COMIC ART',
-      image:
-        'https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=800&auto=format&fit=crop',
-      likes: 89,
-      year: '2023',
-    },
-    {
-      id: 202,
-      title: 'Ethereal Dreams',
-      category: 'COVER ART',
-      image:
-        'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800&auto=format&fit=crop',
-      likes: 210,
-      year: '2024',
-    },
-    {
-      id: 302,
-      title: 'Digital Portrait',
-      category: 'CHARACTER ART',
-      image:
-        'https://images.unsplash.com/photo-1633479393782-b8d2a63cfc43?q=80&w=800&auto=format&fit=crop',
-      likes: 312,
-      year: '2023',
-    },
-    {
-      id: 103,
-      title: 'The Vigilante',
-      category: 'COMIC ART',
-      image:
-        'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?q=80&w=800&auto=format&fit=crop',
-      likes: 45,
-      year: '2022',
-    },
-    {
-      id: 203,
-      title: 'Modern Typography',
-      category: 'COVER ART',
-      image:
-        'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&auto=format&fit=crop',
-      likes: 189,
-      year: '2024',
-    },
-    {
-      id: 303,
-      title: 'Neon Glitch',
-      category: 'CHARACTER ART',
-      image:
-        'https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=800&auto=format&fit=crop',
-      likes: 178,
-      year: '2023',
-    },
-  ]);
-
-  const [activeFilter, setActiveFilter] = useState('ALL');
-
-  // New Project Form State
-  const [isUploadOpen, setIsUploadOpen] = useState(false);
+  
+  // Upload State
   const [newTitle, setNewTitle] = useState('');
   const [newCategory, setNewCategory] = useState('COVER ART');
   const [newImage, setNewImage] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
 
+  // Data
+  const [activeFilter, setActiveFilter] = useState('ALL');
+  const [projects, setProjects] = useState([
+    { id: 101, title: 'Neon Noir Series', category: 'COMIC ART', image: 'https://images.unsplash.com/photo-1605806616949-1e87b487bc2a?q=80&w=800&fit=crop', year: '2023' },
+    { id: 201, title: 'Synthwave Album', category: 'COVER ART', image: 'https://images.unsplash.com/photo-1614613535308-eb5fbd3d2c17?q=80&w=800&fit=crop', year: '2024' },
+    { id: 301, title: 'Cyber Samurai', category: 'CHARACTER ART', image: 'https://images.unsplash.com/photo-1535295972055-1c762f4483e5?q=80&w=800&fit=crop', year: '2022' },
+    { id: 102, title: 'Action Sequence', category: 'COMIC ART', image: 'https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=800&fit=crop', year: '2023' },
+    { id: 202, title: 'Ethereal Dreams', category: 'COVER ART', image: 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=800&fit=crop', year: '2024' },
+    { id: 302, title: 'Digital Portrait', category: 'CHARACTER ART', image: 'https://images.unsplash.com/photo-1633479393782-b8d2a63cfc43?q=80&w=800&fit=crop', year: '2023' },
+    { id: 103, title: 'The Vigilante', category: 'COMIC ART', image: 'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?q=80&w=800&fit=crop', year: '2022' },
+    { id: 203, title: 'Modern Typography', category: 'COVER ART', image: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=800&fit=crop', year: '2024' },
+    { id: 303, title: 'Neon Glitch', category: 'CHARACTER ART', image: 'https://images.unsplash.com/photo-1563089145-599997674d42?q=80&w=800&fit=crop', year: '2023' },
+  ]);
+
   const filters = ['ALL', 'COVER ART', 'CHARACTER ART', 'COMIC ART'];
+  const filteredProjects = activeFilter === 'ALL' ? projects : projects.filter(p => p.category === activeFilter);
 
-  // --- Logic ---
-
+  // --- Handlers ---
   const handleLogin = (e) => {
     e.preventDefault();
     if (usernameInput === 'naeemsabir' && passwordInput === 'myworkiscrazy$$') {
       setIsAuthenticated(true);
       setShowLogin(false);
       setLoginError('');
-      // Open upload modal immediately upon successful login for convenience
       setIsUploadOpen(true);
     } else {
-      setLoginError('Invalid credentials. Access denied.');
+      setLoginError('Invalid credentials.');
     }
-  };
-
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setUsernameInput('');
-    setPasswordInput('');
   };
 
   const handleImageChange = (e) => {
@@ -162,474 +68,262 @@ const Portfolio = () => {
 
   const handleAddProject = (e) => {
     e.preventDefault();
-    if (!newTitle || !newCategory || !previewUrl) return;
-
+    if (!newTitle || !previewUrl) return;
     const newProject = {
       id: Date.now(),
       title: newTitle,
       category: newCategory,
       image: previewUrl,
-      likes: 0,
-      year: new Date().getFullYear().toString(),
+      year: new Date().getFullYear().toString()
     };
-
     setProjects([newProject, ...projects]);
-
-    // Reset
     setNewTitle('');
     setNewImage(null);
     setPreviewUrl('');
     setIsUploadOpen(false);
   };
 
-  const filteredProjects =
-    activeFilter === 'ALL'
-      ? projects
-      : projects.filter((p) => p.category === activeFilter);
-
   return (
-    <div className="min-h-screen bg-white text-zinc-900 font-sans selection:bg-black selection:text-white">
-      {/* Using inline styles for fonts to ensure they apply even if Tailwind config is default.
-         'Italiana' is used for headings (Serif, Elegant).
-         'Manrope' is used for body text (Sans-serif, Clean).
-      */}
+    <div className="app-container">
+      {/* --- STANDARD CSS STYLES (No Tailwind Needed) --- */}
       <style>{`
-        .font-display { font-family: 'Italiana', serif; }
-        .font-body { font-family: 'Manrope', sans-serif; }
-        .masonry-grid {
-          column-count: 1;
-          column-gap: 2rem;
+        /* Reset & Basics */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #ffffff; color: #1a1a1a; font-family: 'Manrope', sans-serif; -webkit-font-smoothing: antialiased; }
+        img { display: block; max-width: 100%; height: auto; }
+        button { background: none; border: none; cursor: pointer; font-family: inherit; color: inherit; }
+        input, select { font-family: 'Manrope', sans-serif; }
+
+        /* Typography */
+        .font-serif { font-family: 'Italiana', serif; }
+        .font-sans { font-family: 'Manrope', sans-serif; }
+
+        /* Navigation */
+        nav {
+          position: fixed; top: 0; left: 0; right: 0; height: 90px;
+          background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 0 40px; z-index: 1000; border-bottom: 1px solid #f0f0f0;
         }
-        @media (min-width: 768px) {
-          .masonry-grid { column-count: 2; }
+        .logo { font-size: 24px; letter-spacing: 1px; font-weight: bold; }
+        .logo span { color: #e11d48; font-size: 30px; line-height: 0; }
+        .desktop-menu { display: flex; gap: 40px; align-items: center; }
+        .nav-link { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; font-weight: 600; color: #888; transition: color 0.3s; }
+        .nav-link:hover { color: #000; }
+        .mobile-menu-btn { display: none; }
+
+        /* Hero Section */
+        .hero {
+          min-height: 90vh; display: flex; align-items: center; justify-content: center;
+          padding: 120px 20px 60px; text-align: center;
         }
-        @media (min-width: 1024px) {
-          .masonry-grid { column-count: 3; }
+        .hero-content { max-width: 900px; animation: fadeIn 1s ease-out; }
+        .hero-subtitle { font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: #888; margin-bottom: 30px; display: block; }
+        .hero h1 { font-size: clamp(3rem, 8vw, 6rem); line-height: 1; margin-bottom: 30px; font-weight: 400; }
+        .hero p { font-size: 1.1rem; color: #666; line-height: 1.8; max-width: 600px; margin: 0 auto 40px; }
+        .cta-btn {
+          display: inline-flex; align-items: center; gap: 10px; padding-bottom: 5px;
+          border-bottom: 1px solid #000; font-size: 12px; letter-spacing: 2px;
+          text-transform: uppercase; font-weight: 700; transition: gap 0.3s;
         }
-        .break-inside-avoid {
-          break-inside: avoid;
+        .cta-btn:hover { gap: 20px; }
+
+        /* Portfolio Grid */
+        .portfolio-section { padding: 80px 40px 120px; max-width: 1600px; margin: 0 auto; }
+        .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-bottom: 60px; }
+        .filter-btn { font-size: 12px; letter-spacing: 2px; text-transform: uppercase; color: #999; padding-bottom: 5px; border-bottom: 1px solid transparent; }
+        .filter-btn.active { color: #000; border-color: #000; }
+        
+        .grid {
+          display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+          gap: 60px 40px;
         }
+        .project-card { cursor: pointer; transition: transform 0.5s ease; }
+        .project-card:hover { transform: translateY(-10px); }
+        .image-wrapper { overflow: hidden; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .image-wrapper img { width: 100%; transition: transform 0.7s ease; }
+        .project-card:hover .image-wrapper img { transform: scale(1.05); }
+        .project-info h3 { font-size: 24px; margin-bottom: 5px; font-weight: 400; }
+        .project-info span { font-size: 10px; letter-spacing: 2px; color: #888; text-transform: uppercase; }
+
+        /* Footer */
+        footer { border-top: 1px solid #f0f0f0; padding: 100px 20px; text-align: center; }
+        .footer-email { font-size: clamp(1.5rem, 4vw, 3rem); font-family: 'Italiana', serif; border-bottom: 1px solid #000; padding-bottom: 10px; margin-bottom: 40px; display: inline-block; }
+        .socials { display: flex; justify-content: center; gap: 30px; margin-bottom: 40px; color: #888; }
+        
+        /* Modals */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); z-index: 2000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .modal-box { background: #fff; border: 1px solid #eee; padding: 40px; width: 100%; max-width: 450px; box-shadow: 0 20px 50px rgba(0,0,0,0.1); position: relative; }
+        .close-btn { position: absolute; top: 20px; right: 20px; color: #999; }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 8px; }
+        .input-group input, .input-group select { width: 100%; padding: 12px 0; border: none; border-bottom: 1px solid #ddd; outline: none; font-size: 16px; background: transparent; border-radius: 0; }
+        .input-group input:focus { border-color: #000; }
+        .submit-btn { width: 100%; background: #000; color: #fff; padding: 15px; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-top: 10px; transition: background 0.3s; }
+        .submit-btn:hover { background: #333; }
+        .upload-area { border: 2px dashed #eee; padding: 40px; text-align: center; cursor: pointer; margin-bottom: 20px; transition: border-color 0.3s; }
+        .upload-area:hover { border-color: #000; }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+          nav { padding: 0 20px; height: 70px; }
+          .desktop-menu { display: none; }
+          .mobile-menu-btn { display: block; }
+          .hero { padding-top: 100px; min-height: 70vh; }
+          .grid { grid-template-columns: 1fr; gap: 40px; }
+          .portfolio-section { padding: 60px 20px; }
+        }
+
+        /* Mobile Menu Overlay */
+        .mobile-menu {
+          position: fixed; inset: 0; background: #fff; z-index: 1500;
+          display: flex; flex-col; flex-direction: column; align-items: center; justify-content: center; gap: 30px;
+        }
+        .mobile-link { font-family: 'Italiana', serif; font-size: 32px; color: #000; text-decoration: none; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
       `}</style>
 
-      {/* --- Navigation --- */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md transition-all duration-300">
-        <div className="max-w-[1800px] mx-auto px-6 h-24 flex items-center justify-between">
-          <div className="font-display text-2xl tracking-wider font-bold">
-            NAEEM SABIR
-            <span className="text-red-500 text-3xl leading-none">.</span>
-          </div>
-
-          {/* Desktop Menu */}
-          <div className="hidden md:flex items-center gap-12 font-body text-xs tracking-[0.2em] font-medium text-zinc-500">
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="hover:text-black transition-colors"
-            >
-              HOME
-            </button>
-            <button
-              onClick={() =>
-                document
-                  .getElementById('portfolio')
-                  .scrollIntoView({ behavior: 'smooth' })
-              }
-              className="hover:text-black transition-colors"
-            >
-              WORK
-            </button>
-            <button
-              onClick={() =>
-                document
-                  .getElementById('contact')
-                  .scrollIntoView({ behavior: 'smooth' })
-              }
-              className="hover:text-black transition-colors"
-            >
-              CONTACT
-            </button>
-
-            {isAuthenticated ? (
-              <div className="flex items-center gap-4 pl-8 border-l border-zinc-200">
-                <span className="text-green-600 flex items-center gap-1">
-                  <Unlock size={14} /> ADMIN
-                </span>
-                <button
-                  onClick={() => setIsUploadOpen(true)}
-                  className="hover:text-black flex items-center gap-1"
-                >
-                  <Plus size={14} /> ADD
-                </button>
-                <button onClick={handleLogout} className="hover:text-red-500">
-                  EXIT
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={() => setShowLogin(true)}
-                className="ml-4 opacity-50 hover:opacity-100 transition-opacity"
-              >
-                <Lock size={14} />
-              </button>
-            )}
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            className="md:hidden text-black"
-            onClick={() => setShowMenu(!showMenu)}
-          >
-            <Menu size={24} />
-          </button>
+      {/* --- CONTENT --- */}
+      <nav>
+        <div className="logo font-serif">NAEEM SABIR<span>.</span></div>
+        <div className="desktop-menu">
+          <button onClick={() => window.scrollTo({top:0, behavior:'smooth'})} className="nav-link">Home</button>
+          <button onClick={() => document.getElementById('work').scrollIntoView({behavior:'smooth'})} className="nav-link">Portfolio</button>
+          <button onClick={() => document.getElementById('contact').scrollIntoView({behavior:'smooth'})} className="nav-link">Contact</button>
+          {isAuthenticated ? (
+            <button onClick={() => setIsUploadOpen(true)} className="nav-link" style={{color: 'green'}}>Add Work</button>
+          ) : (
+            <button onClick={() => setShowLogin(true)} className="nav-link"><Lock size={14}/></button>
+          )}
         </div>
+        <button className="mobile-menu-btn" onClick={() => setShowMenu(!showMenu)}>
+          <Menu size={24} />
+        </button>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       {showMenu && (
-        <div className="fixed inset-0 z-40 bg-white flex flex-col items-center justify-center space-y-8 font-display text-3xl md:hidden animate-in fade-in slide-in-from-top-10 duration-300">
-          <button
-            onClick={() => {
-              setShowMenu(false);
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          >
-            Home
-          </button>
-          <button
-            onClick={() => {
-              setShowMenu(false);
-              document
-                .getElementById('portfolio')
-                .scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            Work
-          </button>
-          <button
-            onClick={() => {
-              setShowMenu(false);
-              document
-                .getElementById('contact')
-                .scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            Contact
-          </button>
-          <button
-            onClick={() => {
-              setShowMenu(false);
-              isAuthenticated ? setIsUploadOpen(true) : setShowLogin(true);
-            }}
-            className="text-xl font-body tracking-widest text-zinc-500 mt-8"
-          >
-            {isAuthenticated ? 'Upload Art' : 'Admin Login'}
-          </button>
-          <button
-            onClick={() => setShowMenu(false)}
-            className="absolute top-8 right-6"
-          >
-            <X size={32} />
+        <div className="mobile-menu">
+          <button className="close-btn" onClick={() => setShowMenu(false)}><X size={32}/></button>
+          <button onClick={() => {setShowMenu(false); window.scrollTo({top:0, behavior:'smooth'})}} className="mobile-link">Home</button>
+          <button onClick={() => {setShowMenu(false); document.getElementById('work').scrollIntoView({behavior:'smooth'})}} className="mobile-link">Work</button>
+          <button onClick={() => {setShowMenu(false); document.getElementById('contact').scrollIntoView({behavior:'smooth'})}} className="mobile-link">Contact</button>
+          <button onClick={() => {setShowMenu(false); isAuthenticated ? setIsUploadOpen(true) : setShowLogin(true)}} className="nav-link" style={{fontSize: '14px', marginTop: '20px'}}>
+             {isAuthenticated ? 'Upload Art' : 'Admin Login'}
           </button>
         </div>
       )}
 
-      {/* --- Hero Section --- */}
-      <header className="relative min-h-[80vh] flex flex-col justify-center px-6 pt-24">
-        <div className="max-w-[1800px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7 space-y-10">
-            <div className="overflow-hidden">
-              <p className="font-body text-sm md:text-base tracking-[0.3em] text-zinc-500 uppercase animate-in slide-in-from-bottom-4 duration-700 delay-100">
-                Graphic Designer & Visual Artist
-              </p>
-            </div>
-            <h1 className="font-display text-6xl md:text-8xl lg:text-9xl leading-[0.9] text-black animate-in slide-in-from-bottom-8 duration-1000 delay-200">
-              Visuals that <br />
-              <span className="italic text-zinc-400">Speak</span> Louder.
-            </h1>
-            <p className="font-body text-zinc-600 max-w-lg text-lg leading-relaxed animate-in slide-in-from-bottom-8 duration-1000 delay-300">
-              Welcome to my portfolio. A curated collection of characters,
-              stories, and identities crafted with precision and passion.
-            </p>
-            <div className="pt-8 animate-in slide-in-from-bottom-8 duration-1000 delay-500">
-              <button
-                onClick={() =>
-                  document
-                    .getElementById('portfolio')
-                    .scrollIntoView({ behavior: 'smooth' })
-                }
-                className="group flex items-center gap-4 text-black font-body text-sm tracking-[0.2em] font-bold uppercase"
-              >
-                View Selected Works
-                <span className="w-12 h-[1px] bg-black group-hover:w-20 transition-all duration-300"></span>
-              </button>
-            </div>
-          </div>
-
-          {/* Decorative Hero Image/Abstract */}
-          <div className="hidden lg:block lg:col-span-5 relative h-[600px] animate-in fade-in duration-1000 delay-500">
-            <div className="absolute inset-0 bg-zinc-100 grayscale hover:grayscale-0 transition-all duration-700 ease-out">
-              <img
-                src="https://images.unsplash.com/photo-1544531586-fde5298cdd40?q=80&w=1200&auto=format&fit=crop"
-                alt="Artistic Portrait"
-                className="w-full h-full object-cover opacity-80"
-              />
-            </div>
-          </div>
+      <header className="hero">
+        <div className="hero-content">
+          <span className="hero-subtitle">Graphic Designer & Visual Artist</span>
+          <h1 className="font-serif">Visuals that <br/> Speak Louder.</h1>
+          <p>Welcome to my portfolio. A curated collection of characters, stories, and identities crafted with precision and passion.</p>
+          <button onClick={() => document.getElementById('work').scrollIntoView({behavior:'smooth'})} className="cta-btn">
+            View Selected Works <ArrowRight size={16}/>
+          </button>
         </div>
       </header>
 
-      {/* --- Portfolio Section --- */}
-      <section id="portfolio" className="py-32 px-6 bg-zinc-50/50">
-        <div className="max-w-[1800px] mx-auto">
-          {/* Filters */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-20 gap-8">
-            <h2 className="font-display text-4xl md:text-5xl">
-              Selected Works
-            </h2>
-            <div className="flex flex-wrap gap-x-8 gap-y-4 font-body text-xs md:text-sm tracking-[0.15em] font-medium text-zinc-400">
-              {filters.map((filter) => (
-                <button
-                  key={filter}
-                  onClick={() => setActiveFilter(filter)}
-                  className={`transition-colors duration-300 ${
-                    activeFilter === filter
-                      ? 'text-black underline underline-offset-8 decoration-1'
-                      : 'hover:text-black'
-                  }`}
-                >
-                  {filter}
-                </button>
-              ))}
-            </div>
-          </div>
+      <section id="work" className="portfolio-section">
+        <div className="filters">
+          {filters.map(f => (
+            <button 
+              key={f} 
+              onClick={() => setActiveFilter(f)} 
+              className={`filter-btn ${activeFilter === f ? 'active' : ''}`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
 
-          {/* Masonry Grid */}
-          <div className="masonry-grid">
-            {filteredProjects.map((project) => (
-              <div
-                key={project.id}
-                className="break-inside-avoid mb-12 group relative cursor-pointer"
-              >
-                <div className="relative overflow-hidden bg-white shadow-sm hover:shadow-2xl transition-all duration-500 ease-out">
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="w-full h-auto object-cover transform transition-transform duration-700 group-hover:scale-105"
-                  />
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center p-8 text-center">
-                    <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                      <p className="font-body text-xs tracking-[0.2em] text-zinc-500 mb-2">
-                        {project.category} — {project.year}
-                      </p>
-                      <h3 className="font-display text-3xl text-black mb-6">
-                        {project.title}
-                      </h3>
-                      <button className="inline-flex items-center gap-2 border border-black px-6 py-3 font-body text-xs tracking-widest uppercase hover:bg-black hover:text-white transition-colors">
-                        View Details
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                {/* Mobile Title (visible below image on mobile only) */}
-                <div className="md:hidden mt-4">
-                  <h3 className="font-display text-xl">{project.title}</h3>
-                  <p className="font-body text-xs text-zinc-500">
-                    {project.category}
-                  </p>
-                </div>
+        <div className="grid">
+          {filteredProjects.map(project => (
+            <div key={project.id} className="project-card">
+              <div className="image-wrapper">
+                <img src={project.image} alt={project.title} />
               </div>
-            ))}
-          </div>
-
-          {filteredProjects.length === 0 && (
-            <div className="h-64 flex items-center justify-center font-display text-2xl text-zinc-300">
-              No works in this collection.
+              <div className="project-info">
+                <span className="font-serif">{project.category} — {project.year}</span>
+                <h3 className="font-serif">{project.title}</h3>
+              </div>
             </div>
-          )}
+          ))}
         </div>
       </section>
 
-      {/* --- Contact Section --- */}
-      <footer
-        id="contact"
-        className="bg-white py-32 px-6 border-t border-zinc-100"
-      >
-        <div className="max-w-4xl mx-auto text-center">
-          <p className="font-body text-zinc-400 text-sm tracking-[0.3em] uppercase mb-8">
-            Get In Touch
-          </p>
-          <h2 className="font-display text-5xl md:text-7xl mb-12 leading-tight">
-            Have a project in mind? <br />
-            <span className="italic text-zinc-300">Let's collaborate.</span>
-          </h2>
-
-          <a
-            href="mailto:naeemsabir002@gmail.com"
-            className="inline-block border-b border-black pb-2 font-display text-2xl md:text-3xl hover:text-zinc-600 hover:border-zinc-300 transition-all mb-16"
-          >
-            naeemsabir002@gmail.com
-          </a>
-
-          <div className="flex justify-center gap-12 mb-20">
-            <button className="text-zinc-400 hover:text-black transition-colors transform hover:-translate-y-1 duration-300">
-              <Instagram size={24} />
-            </button>
-            <button className="text-zinc-400 hover:text-black transition-colors transform hover:-translate-y-1 duration-300">
-              <Twitter size={24} />
-            </button>
-            <button className="text-zinc-400 hover:text-black transition-colors transform hover:-translate-y-1 duration-300">
-              <Mail size={24} />
-            </button>
+      <footer id="contact">
+        <div className="hero-content" style={{margin: '0 auto'}}>
+          <span className="hero-subtitle">Get In Touch</span>
+          <h2 className="font-serif" style={{fontSize: '3rem', marginBottom: '30px'}}>Let's collaborate.</h2>
+          <a href="mailto:naeemsabir002@gmail.com" className="footer-email">naeemsabir002@gmail.com</a>
+          <div className="socials">
+            <Instagram size={20}/>
+            <Twitter size={20}/>
+            <Mail size={20}/>
           </div>
-
-          <p className="font-body text-xs text-zinc-300 tracking-widest uppercase">
-            &copy; {new Date().getFullYear()} Naeem Sabir. All Rights Reserved.
+          <p style={{fontSize: '11px', color: '#ccc', textTransform: 'uppercase', letterSpacing: '2px'}}>
+            © {new Date().getFullYear()} Naeem Sabir. All Rights Reserved.
           </p>
         </div>
       </footer>
 
-      {/* --- Login Modal --- */}
+      {/* Login Modal */}
       {showLogin && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-white/80 backdrop-blur-xl animate-in fade-in duration-300">
-          <div className="w-full max-w-md bg-white border border-zinc-100 shadow-2xl p-12 relative">
-            <button
-              onClick={() => {
-                setShowLogin(false);
-                setLoginError('');
-              }}
-              className="absolute top-6 right-6 text-zinc-400 hover:text-black"
-            >
-              <X size={20} />
-            </button>
-
-            <div className="text-center mb-10">
-              <span className="font-display text-2xl">Restricted Access</span>
-              <div className="w-12 h-[1px] bg-black mx-auto mt-4"></div>
-            </div>
-
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <label className="block font-body text-[10px] tracking-widest uppercase text-zinc-500 mb-2">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  value={usernameInput}
-                  onChange={(e) => setUsernameInput(e.target.value)}
-                  className="w-full border-b border-zinc-200 py-2 font-body focus:outline-none focus:border-black transition-colors bg-transparent rounded-none"
-                  placeholder="Enter username"
-                />
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <button className="close-btn" onClick={() => setShowLogin(false)}><X size={20}/></button>
+            <h3 className="font-serif" style={{fontSize: '24px', marginBottom: '30px', textAlign: 'center'}}>Restricted Access</h3>
+            <form onSubmit={handleLogin}>
+              <div className="input-group">
+                <label>Username</label>
+                <input type="text" value={usernameInput} onChange={e => setUsernameInput(e.target.value)} placeholder="Enter username" />
               </div>
-              <div>
-                <label className="block font-body text-[10px] tracking-widest uppercase text-zinc-500 mb-2">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  value={passwordInput}
-                  onChange={(e) => setPasswordInput(e.target.value)}
-                  className="w-full border-b border-zinc-200 py-2 font-body focus:outline-none focus:border-black transition-colors bg-transparent rounded-none"
-                  placeholder="Enter password"
-                />
+              <div className="input-group">
+                <label>Password</label>
+                <input type="password" value={passwordInput} onChange={e => setPasswordInput(e.target.value)} placeholder="Enter password" />
               </div>
-
-              {loginError && (
-                <p className="text-red-500 text-xs text-center font-body">
-                  {loginError}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                className="w-full bg-black text-white font-body text-xs tracking-widest uppercase py-4 hover:bg-zinc-800 transition-colors mt-4"
-              >
-                Authenticate
-              </button>
+              {loginError && <p style={{color: 'red', fontSize: '12px', textAlign: 'center'}}>{loginError}</p>}
+              <button type="submit" className="submit-btn">Authenticate</button>
             </form>
           </div>
         </div>
       )}
 
-      {/* --- Upload Modal --- */}
+      {/* Upload Modal */}
       {isUploadOpen && (
-        <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-white/80 backdrop-blur-xl animate-in fade-in duration-300">
-          <div className="w-full max-w-2xl bg-white border border-zinc-100 shadow-2xl relative flex flex-col md:flex-row h-[600px] md:h-auto overflow-hidden">
-            <button
-              onClick={() => setIsUploadOpen(false)}
-              className="absolute top-4 right-4 z-10 bg-white rounded-full p-2 text-zinc-400 hover:text-black"
-            >
-              <X size={20} />
-            </button>
-
-            {/* Image Side */}
-            <div className="w-full md:w-1/2 bg-zinc-50 flex items-center justify-center border-r border-zinc-100 relative group">
-              {previewUrl ? (
-                <img
-                  src={previewUrl}
-                  alt="Preview"
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="text-center p-8">
-                  <span className="font-display text-lg text-zinc-400 block mb-2">
-                    Visual Asset
-                  </span>
-                  <span className="font-body text-[10px] uppercase tracking-widest text-zinc-300">
-                    Upload Image
-                  </span>
-                </div>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-            </div>
-
-            {/* Form Side */}
-            <div className="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-              <h3 className="font-display text-3xl mb-8">Add to Collection</h3>
-              <form onSubmit={handleAddProject} className="space-y-6">
-                <div>
-                  <label className="block font-body text-[10px] tracking-widest uppercase text-zinc-500 mb-2">
-                    Title of Work
-                  </label>
-                  <input
-                    type="text"
-                    value={newTitle}
-                    onChange={(e) => setNewTitle(e.target.value)}
-                    className="w-full border-b border-zinc-200 py-2 font-body focus:outline-none focus:border-black transition-colors rounded-none"
-                  />
-                </div>
-                <div>
-                  <label className="block font-body text-[10px] tracking-widest uppercase text-zinc-500 mb-2">
-                    Category
-                  </label>
-                  <select
-                    value={newCategory}
-                    onChange={(e) => setNewCategory(e.target.value)}
-                    className="w-full border-b border-zinc-200 py-2 font-body focus:outline-none focus:border-black transition-colors bg-transparent rounded-none"
-                  >
-                    {filters
-                      .filter((f) => f !== 'ALL')
-                      .map((f) => (
-                        <option key={f} value={f}>
-                          {f}
-                        </option>
-                      ))}
-                  </select>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={!newTitle || !previewUrl}
-                  className="w-full bg-black text-white font-body text-xs tracking-widest uppercase py-4 hover:bg-zinc-800 transition-colors disabled:opacity-50 mt-4"
-                >
-                  Publish
-                </button>
-              </form>
-            </div>
+        <div className="modal-overlay">
+          <div className="modal-box" style={{maxWidth: '600px'}}>
+            <button className="close-btn" onClick={() => setIsUploadOpen(false)}><X size={20}/></button>
+            <h3 className="font-serif" style={{fontSize: '24px', marginBottom: '30px'}}>Add to Collection</h3>
+            <form onSubmit={handleAddProject}>
+              <div className="upload-area" style={{borderColor: previewUrl ? '#000' : '#eee'}}>
+                <label style={{cursor: 'pointer'}}>
+                  {previewUrl ? (
+                    <img src={previewUrl} style={{maxHeight: '200px', margin: '0 auto'}} alt="Preview"/>
+                  ) : (
+                    <div>
+                       <span style={{display: 'block', marginBottom: '10px'}}>Click to Upload Image</span>
+                       <span style={{fontSize: '10px', color: '#999'}}>JPG, PNG supported</span>
+                    </div>
+                  )}
+                  <input type="file" onChange={handleImageChange} hidden />
+                </label>
+              </div>
+              
+              <div className="input-group">
+                <label>Title</label>
+                <input type="text" value={newTitle} onChange={e => setNewTitle(e.target.value)} placeholder="Artwork Title" />
+              </div>
+              <div className="input-group">
+                <label>Category</label>
+                <select value={newCategory} onChange={e => setNewCategory(e.target.value)}>
+                  {filters.filter(f => f !== 'ALL').map(f => <option key={f} value={f}>{f}</option>)}
+                </select>
+              </div>
+              <button type="submit" className="submit-btn" disabled={!newTitle || !previewUrl}>Publish</button>
+            </form>
           </div>
         </div>
       )}
